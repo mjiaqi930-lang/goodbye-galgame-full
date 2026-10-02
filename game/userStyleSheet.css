@@ -1,0 +1,256 @@
+/* 好感度可视化面板 */
+#stat-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: rgba(16, 20, 36, 0.82);
+    border-radius: 12px;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 178, 107, 0.35);
+    font-family: "Microsoft YaHei", sans-serif;
+    min-width: 180px;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+#stat-panel .stat-title {
+    font-size: 13px;
+    color: rgba(255, 210, 168, 0.7);
+    margin-bottom: 8px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+#stat-panel .stat-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+#stat-panel .stat-name {
+    font-size: 12px;
+    color: rgba(220, 220, 230, 0.85);
+    width: 60px;
+    flex-shrink: 0;
+}
+#stat-panel .stat-bar-bg {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+#stat-panel .stat-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+#stat-panel .bar-sincerity { background: linear-gradient(90deg, #ff9e6e, #ffb26b); }
+#stat-panel .bar-defense { background: linear-gradient(90deg, #6b7fb3, #5a6fa0); }
+#stat-panel .bar-trust { background: linear-gradient(90deg, #6ed4a8, #5ac89a); }
+#stat-panel .bar-past { background: linear-gradient(90deg, #b39bd4, #a08bc8); }
+#stat-panel .stat-value {
+    font-size: 11px;
+    color: rgba(180, 180, 195, 0.7);
+    width: 28px;
+    text-align: right;
+    margin-left: 6px;
+    flex-shrink: 0;
+}
+
+/* ============ 移动端/平板适配 ============ */
+
+/* 竖屏手机：强制横屏提示 */
+@media screen and (orientation: portrait) and (max-width: 900px) {
+    #webgal-rotate-hint {
+        position: fixed !important;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: #0a0b16;
+        z-index: 999999;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        color: #ffd2a8;
+        font-family: "Microsoft YaHei", sans-serif;
+        text-align: center;
+    }
+    #webgal-rotate-hint .rotate-icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+        animation: rotate-hint 2s ease-in-out infinite;
+    }
+    #webgal-rotate-hint .rotate-text {
+        font-size: 18px;
+        opacity: 0.8;
+    }
+    @keyframes rotate-hint {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(90deg); }
+    }
+}
+
+/* 手机端（横屏，宽度 <= 900px） */
+@media screen and (orientation: landscape) and (max-width: 900px) {
+    #root > div {
+        width: 100vw !important;
+        height: 100vh !important;
+    }
+
+    .WebGAL-dialog-box {
+        width: 94vw !important;
+        padding: 12px 16px !important;
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+    }
+
+    .WebGAL-choose-item {
+        min-height: 48px !important;
+        padding: 10px 16px !important;
+        font-size: 15px !important;
+    }
+
+    #stat-panel {
+        top: 10px !important;
+        right: 10px !important;
+        min-width: 130px !important;
+        padding: 8px 10px !important;
+    }
+
+    .WebGAL-figure {
+        max-height: 65vh !important;
+    }
+}
+
+/* 平板端（横屏，宽度 901px - 1366px） */
+@media screen and (orientation: landscape) and (min-width: 901px) and (max-width: 1366px) {
+    .WebGAL-dialog-box {
+        font-size: 18px !important;
+        line-height: 1.6 !important;
+    }
+
+    .WebGAL-figure {
+        max-height: 80vh !important;
+    }
+
+    #stat-panel {
+        min-width: 155px !important;
+    }
+}
+
+/* 桌面端（宽度 > 1366px） */
+@media screen and (min-width: 1367px) {
+    .WebGAL-dialog-box {
+        font-size: 20px !important;
+        line-height: 1.7 !important;
+    }
+}
+
+/* 触摸优化 */
+.WebGAL-choose-item {
+    min-height: 48px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.WebGAL-menu-button {
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
+}
+
+/* 防止双击缩放 */
+* {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 安全区域适配（刘海屏） */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
+/* ============ 对话框样式 - 恢复 WebGAL 官方默认 ============ */
+
+/* 文字颜色保持白色 */
+._outer_p1zxt_64 {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+._inner_p1zxt_78 {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    -webkit-text-stroke: 0 transparent !important;
+}
+
+._TextBox_main_1a401_10,
+._TextBox_main_1a401_10 * {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+._TextBox_textElement_1a401_38,
+._TextBox_textElement_start_1a401_43,
+._TextBox_textElement_Settled_1a401_48 {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    animation: none !important;
+    -webkit-text-fill-color: #ffffff !important;
+    text-shadow: none !important;
+}
+
+._zhanwei_p1zxt_89 > *:first-child {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+._zhanwei_p1zxt_89 > *:nth-child(2) {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    -webkit-text-stroke: 0 transparent !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+._TextBox_showName_1a401_52,
+._TextBox_showName_p1zxt_104,
+._innerName_p1zxt_167,
+._outerName_p1zxt_156 {
+    color: #e8d7b5 !important;
+    -webkit-text-fill-color: #e8d7b5 !important;
+    text-shadow: none !important;
+}
+
+/* 选项按钮样式 */
+._Choose_item_4xkm5_13,
+._Choose_item_1kza1_13 {
+    color: #ffffff !important;
+    background: #53616b !important;
+    background-image: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition: none !important;
+}
+
+._Choose_item_4xkm5_13:hover,
+._Choose_item_1kza1_13:hover {
+    color: #ffffff !important;
+    background: #65747c !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* 清除文字阴影和滤镜 */
+._TextBox_main_1a401_10 *,
+._TextBox_main_p1zxt_18 * {
+    text-shadow: none !important;
+    filter: none !important;
+}

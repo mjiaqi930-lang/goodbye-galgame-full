@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#0a0b16" />
+    <!-- 强制清除缓存 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <script>
+      // 强制清除所有缓存
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (let name of names) {
+            caches.delete(name);
+          }
+        });
+      }
+      // 清除 localStorage 中的剧本缓存
+      localStorage.removeItem('webgal-scene-cache');
+      sessionStorage.clear();
+    </script>
+    <link rel="icon" type="image/x-icon" href="./icons/favicon.ico" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.webp" />
+    <link rel="manifest" href="./manifest.json" />
+    <title>WebGAL</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: black;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .html-body__effect-background {
+        height: 100vh;
+        width: 100vw;
+        filter: blur(50px);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: black;
+      }
+
+      .html-body__effect-background-overlay {
+        height: 100%;
+        width: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: black;
+        opacity: 0;
+      }
+
+      .html-body__title-enter {
+        width: 2560px;
+        height: 1440px;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        z-index: 14;
+        opacity: 1;
+        transition: opacity 1.5s;
+      }
+
+      .title-enter__initial-background {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        top: 0;
+        opacity: 1;
+        transition: opacity 1s;
+      }
+
+      .title-enter__white-background {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        opacity: 0;
+        background: linear-gradient(
+          165deg,
+          rgba(255, 255, 255, 0.25) 0%,
+          rgba(255, 255, 255, 1) 50%,
+          rgba(255, 255, 255, 0.25) 100%
+        );
+        transition: opacity 1s;
+      }
+
+      .title-enter__container {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        height: 100%;
+        opacity: 1;
+        font-size: 175%;
+        transition: opacity 1s;
+        z-index: 15;
+        font-family: '思源宋体', Georgia, serif;
+      }
+
+      .title-enter-container__center-text {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .title-enter-container__center-text > div {
+        letter-spacing: 0.25em;
+        padding: 2em 2em 2em 2em;
+        text-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        transition: text-shadow 1s;
+        font-size: 175%;
+        animation: title-enter-container__center-text--blink 4s infinite;
+      }
+
+      @keyframes title-enter-container__center-text--blink {
+        0% {
+          text-shadow: 0 0 15px rgba(0, 0, 0, 0.65);
+        }
+        50% {
+          text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+        100% {
+          text-shadow: 0 0 15px rgba(0, 0, 0, 0.65);
+        }
+      }
+
+      .title-enter-container__link-to-github {
+        position: absolute;
+        bottom: 1em;
+        color: #999;
+        font-size: 75%;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        flex-flow: column;
+        align-items: center;
+      }
+
+      .title-enter-container__link-to-github > div {
+        padding: 0 0 0.25em 0;
+      }
+
+    </style>
+    <script type="module" crossorigin src="./assets/index-CC7KTie-.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-Dch1g2w9.css">
+  </head>
+  <body>
+    <!-- 背景模糊 -->
+    <div id="ebg" class="html-body__effect-background">
+      <div id="ebgOverlay" class="html-body__effect-background-overlay"></div>
+    </div>
+    <!-- 落地页 -->
+    <div class="html-body__title-enter">
+      <div class="title-enter__initial-background"></div>
+      <div class="title-enter__white-background"></div>
+      <div class="title-enter__container">
+        <div class="title-enter-container__center-text">
+          <div>PRESS THE SCREEN TO START</div>
+        </div>
+        <div class="title-enter-container__link-to-github">
+          <div>Powered by <a> WebGAL </a> Framework</div>
+        </div>
+      </div>
+    </div>
+    <!-- 紧急回避页挂载点 -->
+    <div id="html-body__panic-overlay"></div>
+    <!-- 应用挂载点 -->
+    <div id="root"></div>
+    <script>
+      (() => {
+        const userAgent = navigator.userAgent || '';
+        const platform = navigator.userAgentData?.platform || navigator.platform || '';
+        const maxTouchPoints = navigator.maxTouchPoints || 0;
+        const isIOSPhone = /iPhone|iPod/i.test(userAgent);
+        const isIPad = /iPad/i.test(userAgent) || (/Mac/i.test(platform) && maxTouchPoints > 1);
+
+        window.__WEBGAL_DEVICE_INFO__ = {
+          isIOS: isIOSPhone || isIPad,
+          isIOSPhone,
+          isIPad,
+        };
+      })();
+    </script>
+    <!-- 在窗口大小改变时进行强制缩放 -->
+    <script>
+      (() => {
+        const deviceInfo = window.__WEBGAL_DEVICE_INFO__ ?? { isIOS: false };
+        const isIOS = deviceInfo.isIOS;
+        const layoutConfig = isIOS
+          ? {
+              bottomInset: 15,
+              resizeDelay: 500,
+              viewport:
+                'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover',
+              hideEffectBackground: true,
+            }
+          : {
+              bottomInset: 0,
+              resizeDelay: 0,
+              viewport: 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no',
+              hideEffectBackground: false,
+            };
+        const root = document.querySelector('#root');
+        const titleEnter = document.querySelector('.html-body__title-enter');
+        const effectBackground = document.querySelector('.html-body__effect-background');
+        let viewportMeta = document.querySelector('meta[name="viewport"]');
+
+        const ensureViewportMeta = () => {
+          if (!viewportMeta) {
+            viewportMeta = document.createElement('meta');
+            viewportMeta.name = 'viewport';
+            document.head.appendChild(viewportMeta);
+          }
+          return viewportMeta;
+        };
+
+        const resize = () => {
+          const targetHeight = 1440; // 目标高度
+          const targetWidth = 2560; // 目标宽度
+          const h = window.innerHeight; // 窗口高度
+          const w = window.innerWidth; // 窗口宽度
+          const layoutHeight = Math.max(h - layoutConfig.bottomInset, 1);
+          const zoomH = layoutHeight / targetHeight; // 以窗口高度为基准的变换比
+          const zoomW = w / targetWidth; // 以窗口宽度为基准的变换比
+          const zoomH2 = w / targetHeight; // 竖屏时以窗口高度为基础的变换比
+          const zoomW2 = layoutHeight / targetWidth; // 竖屏时以窗口宽度为基础的变换比
+          let mh = (targetHeight - layoutHeight) / 2; // y轴移动距离
+          let mw = (targetWidth - w) / 2; // x轴移动距离
+          let mh2os = targetWidth / 2 - w / 2; // 竖屏时 y轴移动距离
+          let mw2os = targetHeight / 2 - layoutHeight / 2; // 竖屏时 x轴移动距离
+          let transform = '';
+          let effectBackgroundTransform = '';
+          const elements = [root, titleEnter];
+          if (w > h) {
+            if (effectBackground) {
+              effectBackground.style.height = `100vh`;
+              effectBackground.style.width = `100vw`;
+              effectBackgroundTransform = '';
+            }
+            mw = -mw;
+            mh = -mh;
+            if (w * (9 / 16) >= h) {
+              transform = `translate(${mw}px, ${mh}px) ` + `scale(${zoomH}, ${zoomH}) `;
+            }
+            if (w * (9 / 16) < h) {
+              transform = `translate(${mw}px, ${mh}px) ` + `scale(${zoomW}, ${zoomW}) `;
+            }
+          } else {
+            // 旋转
+            if (effectBackground) {
+              effectBackground.style.height = `${targetHeight}px `;
+              effectBackground.style.width = `${targetWidth}px `;
+            }
+            mw2os = -mw2os;
+            if (h * (9 / 16) >= w) {
+              effectBackgroundTransform =
+                `rotate(90deg) ` + `translate(${mw2os}px, ${mh2os}px) ` + `scale(${zoomH2 * 1.75}, ${zoomH2 * 1.75}) `;
+              transform = `rotate(90deg) ` + `translate(${mw2os}px, ${mh2os}px) ` + `scale(${zoomH2},${zoomH2}) `;
+            }
+            if (h * (9 / 16) < w) {
+              effectBackgroundTransform =
+                `rotate(90deg) ` + ` translate(${mw2os}px, ${mh2os}px) ` + `scale(${zoomW2 * 1.75}, ${zoomW2 * 1.75}) `;
+              transform = `rotate(90deg) ` + `translate(${mw2os}px, ${mh2os}px) ` + `scale(${zoomW2},${zoomW2}) `;
+            }
+            // iOS 不强制旋转
+            if (isIOS) {
+              const zoomWi = w / targetWidth;
+              if (effectBackground) {
+                effectBackground.style.height = `100vh`;
+                effectBackground.style.width = `100vw`;
+                effectBackgroundTransform = '';
+              }
+              transform = `translate(${-mw}px, ${-mh}px) ` + `scale(${zoomWi},${zoomWi}) `;
+            }
+          }
+          if (effectBackground) {
+            effectBackground.style.transform = effectBackgroundTransform;
+          }
+          for (const element of elements) {
+            if (element) {
+              element.style.transform = transform;
+            }
+          }
+        };
+        let iosResizeTimer = null;
+        const scheduleResize = () => {
+          if (layoutConfig.resizeDelay > 0) {
+            if (iosResizeTimer) {
+              window.clearTimeout(iosResizeTimer);
+            }
+            iosResizeTimer = window.setTimeout(() => {
+              resize();
+              iosResizeTimer = null;
+            }, layoutConfig.resizeDelay);
+            return;
+          }
+          resize();
+        };
+        if (isIOS) {
+          const styleTag = document.createElement('style');
+          styleTag.textContent = `* { font-synthesis: none !important; }`;
+          if (layoutConfig.hideEffectBackground) {
+            styleTag.textContent += `
+              #ebg,
+              #ebgOverlay {
+                display: none !important;
+              }
+            `;
+          }
+          document.head.appendChild(styleTag);
+        }
+        ensureViewportMeta().content = layoutConfig.viewport;
+        scheduleResize();
+        window.onload = scheduleResize;
+        window.onresize = scheduleResize;
+        // 监听键盘 F11 键按下事件，全屏时触发页面调整
+        document.onkeydown = (e) => {
+          if (e && e.key === 'F11') {
+            setTimeout(() => {
+              scheduleResize();
+            }, 100);
+          }
+        };
+      })();
+    </script>
+    <!-- 注册 Service Worker -->
+    <script>
+      (() => {
+        const isIOS = window.__WEBGAL_DEVICE_INFO__?.isIOS ?? false;
+        const localHostnames = ['localhost', '127.0.0.1', '::1'];
+        const isLocalPreview = localHostnames.includes(window.location.hostname) || window.location.protocol === 'file:';
+        const isElectron = Boolean(window.electronFuncs) || /Electron/i.test(navigator.userAgent || '');
+        const shouldBypassServiceWorker = isIOS || isLocalPreview || isElectron;
+        const webgalServiceWorkerUrl = new URL('./webgal-serviceworker.js', window.location.href).href;
+        const bypassReloadKey = 'webgal-sw-bypass-reloaded';
+        const isWebGALRegistration = (registration) => {
+          const workers = [registration.active, registration.installing, registration.waiting];
+          return workers.some((worker) => worker?.scriptURL === webgalServiceWorkerUrl);
+        };
+        const markBypassReload = () => {
+          try {
+            if (sessionStorage.getItem(bypassReloadKey) === 'true') {
+              return false;
+            }
+            sessionStorage.setItem(bypassReloadKey, 'true');
+            return true;
+          } catch {
+            return false;
+          }
+        };
+        const clearBypassReloadMark = () => {
+          try {
+            sessionStorage.removeItem(bypassReloadKey);
+          } catch {}
+        };
+        const clearWebGALServiceWorker = async () => {
+          try {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            const webgalRegistrations = registrations.filter(isWebGALRegistration);
+            const hasWebGALController = navigator.serviceWorker.controller?.scriptURL === webgalServiceWorkerUrl;
+            await Promise.all(webgalRegistrations.map((registration) => registration.unregister()));
+            if ('caches' in window) {
+              const cacheKeys = await caches.keys();
+              await Promise.all(cacheKeys.filter((key) => key.startsWith('webgal-')).map((key) => caches.delete(key)));
+            }
+            if ((webgalRegistrations.length > 0 || hasWebGALController) && navigator.serviceWorker.controller && markBypassReload()) {
+              window.location.reload();
+            }
+          } catch (error) {
+            console.warn('Failed to clear WebGAL Service Worker cache', error);
+          }
+        };
+        if (!('serviceWorker' in navigator)) {
+          return;
+        }
+        if (shouldBypassServiceWorker) {
+          clearWebGALServiceWorker();
+          return;
+        }
+        if (!window.isSecureContext) {
+          return;
+        }
+        clearBypassReloadMark();
+        navigator.serviceWorker
+          .register('./webgal-serviceworker.js')
+          .then((reg) => {
+            console.log('Registration succeeded. Scope is ' + reg.scope);
+          })
+          .catch((error) => {
+            console.log('Registration failed with ' + error);
+          });
+      })();
+    </script>
+    <!-- 首屏加载 -->
+    <script>
+      (() => {
+        const isIOS = window.__WEBGAL_DEVICE_INFO__?.isIOS ?? false;
+        const enterConfig = isIOS
+          ? { skipAnimation: true, hideDelay: 0 }
+          : { skipAnimation: false, hideDelay: 2000 };
+        let enterPromiseResolve;
+        const enterPromise = new Promise((res) => {
+          enterPromiseResolve = res;
+        });
+        const renderPromise = new Promise((res) => {
+          window.renderPromiseResolve = () => {
+            res();
+            delete window.renderPromiseResolve;
+          };
+        });
+        // 将播放bgm的事件发送出去
+        Promise.all([enterPromise, renderPromise]).then(() => {
+          const event = new MouseEvent('click', {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+          });
+          const target = document.querySelector('.title__enter-game-target');
+          if (target) {
+            target.dispatchEvent(event);
+          }
+        });
+        /** 点击屏幕，进入引擎主界面 */
+        const enter = () => {
+          const titleEnter = document.querySelector('.html-body__title-enter');
+          if (enterConfig.skipAnimation) {
+            if (titleEnter) {
+              titleEnter.style.pointerEvents = 'none';
+              titleEnter.style.transition = 'none';
+              titleEnter.style.opacity = '0';
+              titleEnter.style.display = 'none';
+            }
+            enterPromiseResolve();
+            return;
+          }
+          const initialBackground = document.querySelector('.title-enter__initial-background');
+          if (initialBackground) {
+            initialBackground.style.opacity = '0';
+          }
+          const container = document.querySelector('.title-enter__container');
+          if (container) {
+            container.style.opacity = '0';
+          }
+          const whiteBackground = document.querySelector('.title-enter__white-background');
+          setTimeout(() => {
+            if (whiteBackground) {
+              whiteBackground.style.opacity = '1';
+            }
+          }, 50); // 在50ms后开始显示白色渐变
+          setTimeout(() => {
+            if (titleEnter) titleEnter.style.opacity = '0';
+          }, 500); // 500ms后开始降低落地页透明度
+          if (!isIOS && titleEnter) {
+            titleEnter.style.pointerEvents = 'none'; // 落地页不再响应点击
+            titleEnter.style.background = 'linear-gradient( #a1c4fd 0%, #c2e9fb 100%)'; // 改变标题渐变效果
+          }
+          setTimeout(() => {
+            if (titleEnter) {
+              titleEnter.style.display = 'none';
+            }
+          }, enterConfig.hideDelay); // 将落地页设置为不显示
+          enterPromiseResolve();
+        };
+        const titleEnter = document.querySelector('.html-body__title-enter');
+        if (titleEnter) {
+          titleEnter.onclick = enter;
+        }
+        const linkToGithub = document.querySelector('.title-enter-container__link-to-github');
+        const aTag = linkToGithub?.querySelector('a');
+        if (aTag) {
+          aTag.href = 'https://github.com/OpenWebGAL/WebGAL';
+          aTag.onclick = (event) => event.stopPropagation();
+        }
+      })();
+    </script>
+    <!-- 加载IIFE插件 -->
+    <script>
+      (() => {
+        const loadScript = (url, type) => {
+          return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = url;
+            if (type) script.type = type;
+            script.onload = () => resolve(`Loaded: ${url}`);
+            script.onerror = () => reject(new Error(`Failed to load: ${url}`));
+            document.head.appendChild(script);
+          });
+        };
+        const loadIifePlugin = async (pluginPath) => {
+          try {
+            const info = await loadScript(pluginPath);
+            console.log(info);
+            return true;
+          } catch (error) {
+            console.warn(error);
+            return false;
+          }
+        };
+        // 尝试加载 Live2D SDK，
+        // 只有在用户自行取得 Live2D 许可并放到下面的目录时，这里才可能加载成功。
+        // 本项目 **没有** 引入 Live2D SDK
+        // Attempt to load the Live2D SDK.
+        // This will only succeed if the user has obtained a Live2D license and placed it in the directory below.
+        // This project **does not** include the Live2D SDK.
+        // Live2D SDK の読み込みを試みます。
+        // ユーザーが Live2D ライセンスを取得し、以下のディレクトリに配置した場合のみ、読み込みが成功します。
+        // このプロジェクトには Live2D SDK は**含まれていません**
+        const live2d2Promise = loadIifePlugin('lib/live2d.min.js');
+        const live2d4Promise = loadIifePlugin('lib/live2dcubismcore.min.js');
+        window.live2dPromise = Promise.all([live2d2Promise, live2d4Promise]);
+      })();
+    </script>
+    <!-- main文件 -->
+  <script>
+// 全屏按钮
+(function() {
+  var btn = document.createElement('div');
+  btn.id = 'fs-btn';
+  btn.style.cssText = 'position:fixed;top:8px;right:8px;z-index:999999;background:rgba(16,20,36,0.82);color:#ffd2a8;border:1px solid rgba(255,178,107,0.35);border-radius:8px;padding:6px 14px;font-size:13px;font-family:sans-serif;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;';
+  btn.textContent = '全屏';
+  btn.onclick = function() {
+    var el = document.documentElement;
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      (el.requestFullscreen || el.webkitRequestFullscreen || el.webkitEnterFullscreen || function(){}).call(el);
+    } else {
+      (document.exitFullscreen || document.webkitExitFullscreen || function(){}).call(document);
+    }
+  };
+  document.addEventListener('fullscreenchange', function() {
+    btn.textContent = document.fullscreenElement ? '退出' : '全屏';
+  });
+  document.addEventListener('webkitfullscreenchange', function() {
+    btn.textContent = document.webkitFullscreenElement ? '退出' : '全屏';
+  });
+  document.body.appendChild(btn);
+})();
+
+// 好感度面板
+(function() {
+  var s = document.createElement('style');
+  s.textContent = '\
+    #sp{position:fixed;top:8px;left:8px;z-index:999999;background:rgba(16,20,36,0.80);border-radius:8px;padding:8px 10px;border:1px solid rgba(255,178,107,0.30);font-family:sans-serif;min-width:120px;pointer-events:none;display:none;}\
+    #sp .t{font-size:11px;color:rgba(255,210,168,0.65);margin-bottom:4px;text-align:center;}\
+    #sp .r{display:flex;align-items:center;margin-bottom:3px;}\
+    #sp .n{font-size:10px;color:rgba(220,220,230,0.82);width:32px;flex-shrink:0;}\
+    #sp .b{flex:1;height:5px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;}\
+    #sp .f{height:100%;border-radius:2px;transition:width 0.6s ease;}\
+    #sp .v{font-size:9px;color:rgba(180,180,195,0.65);width:18px;text-align:right;margin-left:3px;flex-shrink:0;}\
+    .f1{background:linear-gradient(90deg,#ff9e6e,#ffb26b);}\
+    .f2{background:linear-gradient(90deg,#6b7fb3,#5a6fa0);}\
+    .f3{background:linear-gradient(90deg,#6ed4a8,#5ac89a);}\
+    .f4{background:linear-gradient(90deg,#b39bd4,#a08bc8);}';
+  document.head.appendChild(s);
+  var p = document.createElement('div');
+  p.id = 'sp';
+  p.innerHTML = '<div class="t">好感度</div>\
+    <div class="r"><span class="n">真诚</span><div class="b"><div class="f f1" id="b1" style="width:0%"></div></div><span class="v" id="v1">0</span></div>\
+    <div class="r"><span class="n">防御</span><div class="b"><div class="f f2" id="b2" style="width:0%"></div></div><span class="v" id="v2">0</span></div>\
+    <div class="r"><span class="n">信任</span><div class="b"><div class="f f3" id="b3" style="width:0%"></div></div><span class="v" id="v3">0</span></div>\
+    <div class="r"><span class="n">执着</span><div class="b"><div class="f f4" id="b4" style="width:0%"></div></div><span class="v" id="v4">0</span></div>';
+  document.body.appendChild(p);
+  function tick() {
+    try {
+      var r = document.getElementById('root') || document.getElementById('app');
+      var rr = r && (r._reactRootContainer || r._reactRoot);
+      var fiber = rr && rr._internalRoot && rr._internalRoot.current;
+      var store = null;
+      while (fiber) {
+        if (fiber.memoizedState && fiber.memoizedState.store) { store = fiber.memoizedState.store; break; }
+        if (fiber.memoizedProps && fiber.memoizedProps.store) { store = fiber.memoizedProps.store; break; }
+        fiber = fiber.child || fiber.sibling || (fiber.return && fiber.return.sibling);
+      }
+      if (store && store.getState) {
+        var st = store.getState();
+        var gv = st && st.script && st.script.runtimeState && st.script.runtimeState.GV;
+        if (gv) {
+          var si=gv.sincerity||0,de=gv.defense||0,tr=gv.trust||0,pa=gv.pastObsession||0;
+          if (si>0||de>0||tr>0||pa>0) p.style.display='block';
+          document.getElementById('b1').style.width=Math.min(si*5,100)+'%';
+          document.getElementById('b2').style.width=Math.min(de*5,100)+'%';
+          document.getElementById('b3').style.width=Math.min(tr*5,100)+'%';
+          document.getElementById('b4').style.width=Math.min(pa*5,100)+'%';
+          document.getElementById('v1').textContent=si;
+          document.getElementById('v2').textContent=de;
+          document.getElementById('v3').textContent=tr;
+          document.getElementById('v4').textContent=pa;
+        }
+      }
+    } catch(e){}
+    setTimeout(tick, 1500);
+  }
+  setTimeout(tick, 3000);
+})();
+</script>
+<style>
+  #mini-game-launcher{position:fixed;right:14px;top:48px;z-index:100000;background:rgba(16,20,36,.86);color:#ffd2a8;border:1px solid rgba(255,178,107,.45);border-radius:8px;padding:7px 12px;font:13px sans-serif;cursor:pointer}
+  #mini-game-overlay{display:none;position:fixed;inset:0;z-index:100001;background:rgba(6,8,18,.78);align-items:center;justify-content:center;font-family:"Microsoft YaHei",sans-serif}
+  #mini-game-card{width:min(90vw,620px);background:#151a2d;color:#f7e8d5;border:1px solid rgba(255,178,107,.55);border-radius:14px;padding:22px;box-shadow:0 12px 40px #0009}
+  #mini-game-card h2{margin:0 0 8px;color:#ffd2a8;font-size:22px}
+  #mini-game-card p{margin:8px 0 16px;line-height:1.6;color:#ddd1c4;font-size:14px}
+  .mg-items{display:grid;gap:9px;margin:14px 0}
+  .mg-item{background:#222943;border:1px solid #58617e;border-radius:8px;padding:12px;cursor:pointer;color:#f7e8d5}
+  .mg-item.selected{border-color:#ffb26b;background:#493548}
+  .mg-item.correct{border-color:#6ed4a8;background:#203e3a}
+  .mg-item.wrong{border-color:#d87979;background:#482d38}
+  .mg-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+  .mg-btn{border:1px solid #ffb26b;background:#2b3049;color:#ffe8cf;border-radius:8px;padding:9px 15px;cursor:pointer}
+  .mg-btn.primary{background:#a85f52}
+  #mg-result{min-height:24px;color:#ffc58d;font-size:14px}
+</style>
+<script>
+(function(){
+  var launcher=document.createElement('button'); launcher.id='mini-game-launcher'; launcher.textContent='互动'; document.body.appendChild(launcher);
+  var overlay=document.createElement('div'); overlay.id='mini-game-overlay';
+  overlay.innerHTML='<div id="mini-game-card"><h2 id="mg-title"></h2><p id="mg-desc"></p><div class="mg-items" id="mg-items"></div><div id="mg-result"></div><div class="mg-actions"><button class="mg-btn" id="mg-memory">回忆整理</button><button class="mg-btn" id="mg-reply">回复判断</button><button class="mg-btn" id="mg-close">关闭</button><button class="mg-btn primary" id="mg-next">确认</button></div></div>';
+  document.body.appendChild(overlay);
+  var title=overlay.querySelector('#mg-title'), desc=overlay.querySelector('#mg-desc'), items=overlay.querySelector('#mg-items'), result=overlay.querySelector('#mg-result'), next=overlay.querySelector('#mg-next');
+  var mode='memory', selected=[];
+  var games={
+    memory:{title:'回忆碎片整理',desc:'寒假前最后一天发生了什么？按正确顺序点击四个记忆碎片。',data:['递出薯片','提醒去宿舍','递出纸袋','最后说再见'],answer:['递出薯片','提醒去宿舍','递出纸袋','最后说再见']},
+    reply:{title:'真心话回复',desc:'小胖再次发来消息。选择一个你愿意承担后果的回答。',data:['我现在很忙，之后再说。','我看到了，但我不知道怎么面对，所以一直没回。','你为什么总要求我马上回复？'],answer:['我看到了，但我不知道怎么面对，所以一直没回。']}
+  };
+  function openGame(which){mode=which||'memory'; selected=[]; var g=games[mode]; title.textContent=g.title; desc.textContent=g.desc; result.textContent=''; next.textContent=mode==='memory'?'检查顺序':'确认回答'; items.innerHTML='';
+    g.data.forEach(function(x,i){var b=document.createElement('button');b.className='mg-item';b.textContent=x;b.dataset.index=i;b.onclick=function(){if(mode==='memory'){if(!selected.includes(x)){selected.push(x);b.classList.add('selected');b.textContent=selected.length+' · '+x;}}else{selected=[x];items.querySelectorAll('.mg-item').forEach(function(n){n.classList.remove('selected')});b.classList.add('selected')}};items.appendChild(b)});overlay.style.display='flex';}
+  next.onclick=function(){var g=games[mode]; if(mode==='memory'){if(selected.length!==4){result.textContent='请先排列四个碎片。';return}var ok=selected.every(function(x,i){return x===g.answer[i]});result.textContent=ok?'顺序正确。你确实记得那一天。信任度上升。':'顺序不对。回忆里有些地方已经模糊了。';if(ok) window.__miniGameTrust=(window.__miniGameTrust||0)+2;items.querySelectorAll('.mg-item').forEach(function(n,i){n.classList.add(selected[i]===g.answer[i]?'correct':'wrong')})}else{if(!selected.length){result.textContent='请选择一个回答。';return}if(selected[0]===g.answer[0]){result.textContent='你选择了正面回答。真诚度上升。';window.__miniGameSincerity=(window.__miniGameSincerity||0)+2}else{result.textContent='这句话让小胖更难受了。防御度上升。';window.__miniGameDefense=(window.__miniGameDefense||0)+2}}};
+  launcher.onclick=function(){openGame('memory')};
+  overlay.querySelector('#mg-memory').onclick=function(){openGame('memory')};
+  overlay.querySelector('#mg-reply').onclick=function(){openGame('reply')};
+  overlay.querySelector('#mg-close').onclick=function(){overlay.style.display='none'};
+  overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.style.display='none'});
+  // 在第二章之后可切换到回复小游戏
+  window.openReplyMiniGame=function(){openGame('reply')};
+})();
+</script>
+  <script>
+// 音频解锁：首次点击页面后启动忧伤BGM，绕过移动浏览器自动播放限制
+(function(){
+  var unlocked=false, audio=null;
+  function unlockAudio(){
+    if(unlocked)return;
+    unlocked=true;
+    try{
+      audio=new Audio('./game/bgm/bgm_melancholy.mp3');
+      audio.loop=true; audio.volume=0.22;
+      var p=audio.play();
+      if(p&&p.catch)p.catch(function(){ unlocked=false; });
+    }catch(e){}
+    document.removeEventListener('pointerdown',unlockAudio,true);
+    document.removeEventListener('touchstart',unlockAudio,true);
+    document.removeEventListener('click',unlockAudio,true);
+  }
+  document.addEventListener('pointerdown',unlockAudio,true);
+  document.addEventListener('touchstart',unlockAudio,true);
+  document.addEventListener('click',unlockAudio,true);
+})();
+</script>
+  </body>
+</html>

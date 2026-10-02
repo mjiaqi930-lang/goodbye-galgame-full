@@ -1,0 +1,472 @@
+; ============================================
+; 第一章：五个问题
+; ============================================
+
+label:chapter1;
+
+; 切换到空教室场景
+changeBg:bg_classroom_sunset.webp -next;
+setTransition: -target=bg-main -enter=fadeIn -next;
+
+:寒假前最后一天。;
+
+:放学后的空教室，夕阳透过窗户斜照进来。;
+
+changeFigure:xp_normal.webp -left -next;
+changeFigure:jy_normal.webp -right -next;
+
+miniAvatar:xp_normal.webp;
+
+小胖:你来了。;
+
+季言:……嗯。;
+
+小胖:坐吧。;
+
+:两人在教室中央面对面坐下。;
+
+:中间隔着一张空课桌。;
+
+小胖:我知道你看到消息了。;
+
+小胖:所以，回答我吧。;
+
+小胖:第一个问题。;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:你在意过我吗？;
+
+; 选择分支
+choose:直接承认:q1_a|模糊回答:q1_b|反问回去:q1_c|否认:q1_d|承认曾经在意:q1_e;
+
+; ============================================
+; 问题一 - 选项A：直接承认
+label:q1_a;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+2;
+
+季言:在意过。;
+
+季言:不是敷衍你的那种在意，是真的把你当过重要的人。;
+
+changeFigure:xp_surprised.webp -left -next;
+
+小胖:……真的？;
+
+季言:真的。;
+
+jumpLabel:q2;
+
+; ============================================
+; 问题一 - 选项B：模糊回答
+label:q1_b;
+setVar:sincerity=sincerity-1;
+setVar:trust=trust-1;
+
+季言:应该算在意吧。;
+
+changeFigure:xp_smile_broken.webp -left -next;
+
+小胖:你看，你又开始用"应该"了。;
+
+jumpLabel:q2;
+
+; ============================================
+; 问题一 - 选项C：反问回去
+label:q1_c;
+setVar:defense=defense+2;
+
+季言:你为什么一定要知道这个？;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:我在问你。;
+
+jumpLabel:q2;
+
+; ============================================
+; 问题一 - 选项D：否认
+label:q1_d;
+setVar:defense=defense+3;
+setVar:trust=trust-3;
+
+季言:我没有你想象中那么在意。;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:……是吗。;
+
+jumpLabel:q2;
+
+; ============================================
+; 问题一 - 选项E：承认曾经在意
+label:q1_e;
+setVar:sincerity=sincerity+1;
+setVar:pastObsession=pastObsession-1;
+
+季言:在意过。;
+
+季言:但现在的感觉和以前不一样了。;
+
+changeFigure:xp_normal.webp -left -next;
+
+小胖:……至少你说了实话。;
+
+jumpLabel:q2;
+
+; ============================================
+; 问题二：你有把我当朋友吗？
+label:q2;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:第二个问题。;
+
+小胖:你有把我当朋友吗？;
+
+choose:明确回答:q2_a|降低关系定义:q2_b|把问题推回去:q2_c|说朋友没有排名:q2_d|承认他被排在后面:q2_e;
+
+; ============================================
+; 问题二 - 选项A：明确回答
+label:q2_a;
+setVar:sincerity=sincerity+3;
+setVar:trust=trust+2;
+
+季言:有。;
+
+季言:但我后来没有像对待朋友那样对待你。;
+
+changeFigure:xp_cry.webp -left -next;
+
+小胖:……你终于承认了。;
+
+jumpLabel:q3;
+
+; ============================================
+; 问题二 - 选项B：降低关系定义
+label:q2_b;
+setVar:trust=trust-4;
+
+季言:我觉得我们算认识的人，朋友这个词可能太重了。;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:……连朋友都不算？;
+
+jumpLabel:q3;
+
+; ============================================
+; 问题二 - 选项C：把问题推回去
+label:q2_c;
+setVar:defense=defense+2;
+
+季言:你觉得我们算朋友吗？;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:我在问你。;
+
+jumpLabel:q3;
+
+; ============================================
+; 问题二 - 选项D：说朋友没有排名
+label:q2_d;
+setVar:defense=defense+1;
+
+季言:朋友不是考试成绩，没有第一名和最后一名。;
+
+changeFigure:xp_smile_broken.webp -left -next;
+
+小胖:可是你每次选择别人，都让我知道自己大概排在哪里。;
+
+jumpLabel:q3;
+
+; ============================================
+; 问题二 - 选项E：承认他被排在后面
+label:q2_e;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+1;
+
+季言:你是我的朋友。;
+
+季言:但很多时候，我确实把你放在了很后面。;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:……至少你承认了。;
+
+jumpLabel:q3;
+
+; ============================================
+; 问题三：你嫌弃过我几次？
+label:q3;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:第三个问题。;
+
+小胖:你嫌弃过我几次？;
+
+小胖:多次，还是几乎没有？;
+
+choose:具体承认:q3_a|完全否认:q3_b|把问题说成小胖的错:q3_c|承认嫌弃但不定义全部:q3_d|沉默:q3_e;
+
+; ============================================
+; 问题三 - 选项A：具体承认
+label:q3_a;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+1;
+
+季言:有几次。;
+
+季言:你连续发很多消息、反复追问的时候，我确实觉得烦。;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:……我知道了。;
+
+jumpLabel:q4;
+
+; ============================================
+; 问题三 - 选项B：完全否认
+label:q3_b;
+setVar:defense=defense+2;
+setVar:trust=trust-2;
+
+季言:几乎没有。;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:那你为什么总是躲着我？;
+
+jumpLabel:q4;
+
+; ============================================
+; 问题三 - 选项C：把问题说成小胖的错
+label:q3_c;
+setVar:defense=defense+3;
+setVar:trust=trust-3;
+
+季言:不是嫌弃，是你有时候确实让人有压力。;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:……所以是我的错？;
+
+jumpLabel:q4;
+
+; ============================================
+; 问题三 - 选项D：承认嫌弃但不定义全部
+label:q3_d;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+2;
+
+季言:有过，但不是因为你这个人不值得。;
+
+季言:是我把某些时候的压力，全部归到了你身上。;
+
+changeFigure:xp_normal.webp -left -next;
+
+小胖:……谢谢你说实话。;
+
+jumpLabel:q4;
+
+; ============================================
+; 问题三 - 选项E：沉默
+label:q3_e;
+setVar:defense=defense+1;
+setVar:trust=trust-2;
+
+:季言没有回答。;
+
+changeFigure:xp_smile_broken.webp -left -next;
+
+小胖:你不说，我就只能自己猜。;
+
+小胖:而我最擅长的，就是把自己猜得更难受。;
+
+jumpLabel:q4;
+
+; ============================================
+; 继续问题四、五
+; ============================================
+
+; 问题四：你遇到我的时候，情绪起伏过吗？
+label:q4;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:第四个问题。;
+
+小胖:我们不期而遇的时候，你情绪起伏过吗？;
+
+choose:承认尴尬和不舍:q4_a|说完全没有:q4_b|说自己不知道:q4_c|直接说想躲开:q4_d|说自己也有不舍:q4_e;
+
+; 问题四选项A
+label:q4_a;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+1;
+
+季言:有。;
+
+季言:我有过想和你说话的时候，也有过想躲开的时候。;
+
+小胖:那你为什么没有走过来？;
+
+季言:……我不知道。;
+
+jumpLabel:q5;
+
+; 问题四选项B
+label:q4_b;
+setVar:trust=trust-2;
+
+季言:没有，我觉得很平常。;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:……是吗。;
+
+jumpLabel:q5;
+
+; 问题四选项C
+label:q4_c;
+setVar:defense=defense+1;
+
+季言:我没有认真分辨过。;
+
+changeFigure:xp_smile_broken.webp -left -next;
+
+小胖:你连自己有没有在意过，都没有认真分辨过吗？;
+
+jumpLabel:q5;
+
+; 问题四选项D
+label:q4_d;
+setVar:sincerity=sincerity+1;
+setVar:trust=trust-1;
+
+季言:有时候我看到你，会下意识想避开。;
+
+changeFigure:xp_cry.webp -left -next;
+
+小胖:……为什么？;
+
+季言:我不知道该怎么面对你。;
+
+jumpLabel:q5;
+
+; 问题四选项E
+label:q4_e;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+2;
+
+季言:有过不舍。;
+
+季言:但我没有勇气主动面对你。;
+
+changeFigure:xp_surprised.webp -left -next;
+
+小胖:……真的？;
+
+jumpLabel:q5;
+
+; ============================================
+; 问题五：你为什么不回消息？
+label:q5;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:最后一个问题。;
+
+小胖:你没回我信息的时候，是把我的微信聊天折叠了吗？;
+
+小胖:还是和朋友玩游戏？;
+
+choose:直接承认:q5_a|承认逃避:q5_b|只说自己很忙:q5_c|反过来责怪小胖:q5_d|承认游戏但补充事实:q5_e;
+
+; 问题五选项A
+label:q5_a;
+setVar:sincerity=sincerity+3;
+setVar:trust=trust+1;
+
+季言:有几次我在和朋友玩游戏，看到了你的消息，但没有马上回。;
+
+季言:后来我忘了。;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:所以我真的排在游戏后面？;
+
+季言:……对不起。;
+
+jumpLabel:chapter2;
+
+; 问题五选项B
+label:q5_b;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+1;
+
+季言:有几次我看到了，但不知道怎么回，所以故意放着。;
+
+changeFigure:xp_normal.webp -left -next;
+
+小胖:……至少你承认了。;
+
+jumpLabel:chapter2;
+
+; 问题五选项C
+label:q5_c;
+setVar:defense=defense+2;
+
+季言:那段时间确实比较忙。;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:忙到没有时间回一句话，还是忙到不想回我？;
+
+jumpLabel:chapter2;
+
+; 问题五选项D
+label:q5_d;
+setVar:defense=defense+3;
+setVar:trust=trust-3;
+
+季言:你为什么总是要求我马上回复？;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:……所以你还是在怪我？;
+
+jumpLabel:chapter2;
+
+; 问题五选项E
+label:q5_e;
+setVar:sincerity=sincerity+3;
+setVar:trust=trust+2;
+
+季言:我确实和朋友玩游戏。;
+
+季言:但真正的问题不是游戏，而是我觉得你的消息可以晚一点处理。;
+
+changeFigure:xp_cry.webp -left -next;
+
+小胖:……你终于说了真话。;
+
+jumpLabel:chapter2;
+
+; ============================================
+; 进入第二章
+; ============================================
+
+label:chapter2;
+
+changeFigure:none -left -next;
+changeFigure:none -right -next;
+
+:五个问题问完了。;
+
+:教室里陷入沉默。;
+
+jumpLabel:friendship_lessons;

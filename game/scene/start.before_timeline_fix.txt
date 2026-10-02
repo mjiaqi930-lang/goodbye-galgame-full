@@ -1,0 +1,1271 @@
+; ============================================
+; 再见之前，请说真心话
+; WebGAL 剧本 - 主入口
+; ============================================
+
+; 游戏配置
+setVar:gameTitle=再见之前，请说真心话;
+setVar:version=1.0;
+setVar:sincerity=0;
+setVar:defense=0;
+setVar:trust=0;
+setVar:pastObsession=0;
+
+; 开场CG
+unlockCg:title_keyvisual_4k.webp -name=标题图 -series=op;
+
+; 开场
+changeBg:bg_classroom_dark.webp -next;
+setTransition: -target=bg-main -enter=fadeIn -next;
+
+; 背景音乐：忧伤钢琴
+bgm:bgm_melancholy.mp3 -volume=50 -enter=3000;
+
+; 开场独白
+:深夜。;
+
+:手机屏幕突然亮起。;
+
+changeFigure:jy_normal.webp -center -next;
+miniAvatar:jy_normal.webp;
+
+季言:（……还没睡。）;
+
+季言:（这么晚了，谁会发消息……）;
+
+:屏幕上显示着一条新消息。;
+
+:发送者：小胖;
+
+:「如果你愿意和我和好，那你可以跟我说一下真心话吗？」;
+
+季言:（……！）;
+
+季言:（小胖……他怎么会……）;
+
+:紧接着，一连串的问题发了过来。;
+
+:「1. 你在意过我吗？」;
+
+:「2. 你有把我当朋友吗？如果有的话，我是排在最后吗？」;
+
+:「3. 你嫌弃过我几次？多次或者几乎没有。」;
+
+:「4. 你与我不期而遇的时候，你情绪起伏过吗？」;
+
+:「5. 你没回我信息的时候，是把我的微信聊天折叠了吗？还是和朋友玩游戏？」;
+
+季言:（……）;
+
+季言:（这些问题……）;
+
+季言:（我该怎么回答……）;
+
+changeFigure:none -center -next;
+
+:窗外的夜色更深了。;
+
+:季言盯着手机屏幕，久久没有动。;
+
+:他知道，这一次，不能再逃避了。;
+
+; 进入第一章
+jumpLabel:chapter1;; ============================================
+; 第一章：五个问题
+; ============================================
+
+label:chapter1;
+
+; 切换到空教室场景
+changeBg:bg_classroom_sunset.webp -next;
+setTransition: -target=bg-main -enter=fadeIn -next;
+
+; 切换为紧张BGM
+bgm:bgm_tense2.mp3 -volume=45 -enter=2000;
+
+:寒假前最后一天。;
+
+:放学后的空教室，夕阳透过窗户斜照进来。;
+
+changeFigure:xp_normal.webp -left -next;
+changeFigure:jy_normal.webp -right -next;
+
+miniAvatar:xp_normal.webp;
+
+小胖:你来了。;
+
+季言:……嗯。;
+
+小胖:坐吧。;
+
+:两人在教室中央面对面坐下。;
+
+:中间隔着一张空课桌。;
+
+小胖:我知道你看到消息了。;
+
+小胖:所以，回答我吧。;
+
+小胖:第一个问题。;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:你在意过我吗？;
+
+; 选择分支
+choose:直接承认:q1_a|模糊回答:q1_b|反问回去:q1_c|否认:q1_d|承认曾经在意:q1_e;
+
+; ============================================
+; 问题一 - 选项A：直接承认
+label:q1_a;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+2;
+
+季言:在意过。;
+
+季言:不是敷衍你的那种在意，是真的把你当过重要的人。;
+
+changeFigure:xp_surprised.webp -left -next;
+
+小胖:……真的？;
+
+季言:真的。;
+
+
+jumpLabel:q2;
+
+; ============================================
+; 问题一 - 选项B：模糊回答
+label:q1_b;
+setVar:sincerity=sincerity-1;
+setVar:trust=trust-1;
+
+季言:应该算在意吧。;
+
+changeFigure:xp_smile_broken.webp -left -next;
+
+小胖:你看，你又开始用"应该"了。;
+
+jumpLabel:q2;
+
+; ============================================
+; 问题一 - 选项C：反问回去
+label:q1_c;
+setVar:defense=defense+2;
+
+季言:你为什么一定要知道这个？;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:我在问你。;
+
+jumpLabel:q2;
+
+; ============================================
+; 问题一 - 选项D：否认
+label:q1_d;
+setVar:defense=defense+3;
+setVar:trust=trust-3;
+
+季言:我没有你想象中那么在意。;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:……是吗。;
+
+jumpLabel:q2;
+
+; ============================================
+; 问题一 - 选项E：承认曾经在意
+label:q1_e;
+setVar:sincerity=sincerity+1;
+setVar:pastObsession=pastObsession-1;
+
+季言:在意过。;
+
+季言:但现在的感觉和以前不一样了。;
+
+changeFigure:xp_normal.webp -left -next;
+
+小胖:……至少你说了实话。;
+
+jumpLabel:q2;
+
+; ============================================
+; 问题二：你有把我当朋友吗？
+label:q2;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:第二个问题。;
+
+小胖:你有把我当朋友吗？;
+
+choose:明确回答:q2_a|降低关系定义:q2_b|把问题推回去:q2_c|说朋友没有排名:q2_d|承认他被排在后面:q2_e;
+
+; ============================================
+; 问题二 - 选项A：明确回答
+label:q2_a;
+setVar:sincerity=sincerity+3;
+setVar:trust=trust+2;
+
+季言:有。;
+
+季言:但我后来没有像对待朋友那样对待你。;
+
+changeFigure:xp_cry.webp -left -next;
+
+小胖:……你终于承认了。;
+
+jumpLabel:q3;
+
+; ============================================
+; 问题二 - 选项B：降低关系定义
+label:q2_b;
+setVar:trust=trust-4;
+
+季言:我觉得我们算认识的人，朋友这个词可能太重了。;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:……连朋友都不算？;
+
+jumpLabel:q3;
+
+; ============================================
+; 问题二 - 选项C：把问题推回去
+label:q2_c;
+setVar:defense=defense+2;
+
+季言:你觉得我们算朋友吗？;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:我在问你。;
+
+jumpLabel:q3;
+
+; ============================================
+; 问题二 - 选项D：说朋友没有排名
+label:q2_d;
+setVar:defense=defense+1;
+
+季言:朋友不是考试成绩，没有第一名和最后一名。;
+
+changeFigure:xp_smile_broken.webp -left -next;
+
+小胖:可是你每次选择别人，都让我知道自己大概排在哪里。;
+
+jumpLabel:q3;
+
+; ============================================
+; 问题二 - 选项E：承认他被排在后面
+label:q2_e;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+1;
+
+季言:你是我的朋友。;
+
+季言:但很多时候，我确实把你放在了很后面。;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:……至少你承认了。;
+
+jumpLabel:q3;
+
+; ============================================
+; 问题三：你嫌弃过我几次？
+label:q3;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:第三个问题。;
+
+小胖:你嫌弃过我几次？;
+
+小胖:多次，还是几乎没有？;
+
+choose:具体承认:q3_a|完全否认:q3_b|把问题说成小胖的错:q3_c|承认嫌弃但不定义全部:q3_d|沉默:q3_e;
+
+; ============================================
+; 问题三 - 选项A：具体承认
+label:q3_a;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+1;
+
+季言:有几次。;
+
+季言:你连续发很多消息、反复追问的时候，我确实觉得烦。;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:……我知道了。;
+
+jumpLabel:q4;
+
+; ============================================
+; 问题三 - 选项B：完全否认
+label:q3_b;
+setVar:defense=defense+2;
+setVar:trust=trust-2;
+
+季言:几乎没有。;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:那你为什么总是躲着我？;
+
+jumpLabel:q4;
+
+; ============================================
+; 问题三 - 选项C：把问题说成小胖的错
+label:q3_c;
+setVar:defense=defense+3;
+setVar:trust=trust-3;
+
+季言:不是嫌弃，是你有时候确实让人有压力。;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:……所以是我的错？;
+
+jumpLabel:q4;
+
+; ============================================
+; 问题三 - 选项D：承认嫌弃但不定义全部
+label:q3_d;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+2;
+
+季言:有过，但不是因为你这个人不值得。;
+
+季言:是我把某些时候的压力，全部归到了你身上。;
+
+changeFigure:xp_normal.webp -left -next;
+
+小胖:……谢谢你说实话。;
+
+jumpLabel:q4;
+
+; ============================================
+; 问题三 - 选项E：沉默
+label:q3_e;
+setVar:defense=defense+1;
+setVar:trust=trust-2;
+
+:季言没有回答。;
+
+changeFigure:xp_smile_broken.webp -left -next;
+
+小胖:你不说，我就只能自己猜。;
+
+小胖:而我最擅长的，就是把自己猜得更难受。;
+
+jumpLabel:q4;
+
+; ============================================
+; 继续问题四、五
+; ============================================
+
+; 问题四：你遇到我的时候，情绪起伏过吗？
+label:q4;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:第四个问题。;
+
+小胖:我们不期而遇的时候，你情绪起伏过吗？;
+
+choose:承认尴尬和不舍:q4_a|说完全没有:q4_b|说自己不知道:q4_c|直接说想躲开:q4_d|说自己也有不舍:q4_e;
+
+; 问题四选项A
+label:q4_a;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+1;
+
+季言:有。;
+
+季言:我有过想和你说话的时候，也有过想躲开的时候。;
+
+小胖:那你为什么没有走过来？;
+
+季言:……我不知道。;
+
+jumpLabel:q5;
+
+; 问题四选项B
+label:q4_b;
+setVar:trust=trust-2;
+
+季言:没有，我觉得很平常。;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:……是吗。;
+
+jumpLabel:q5;
+
+; 问题四选项C
+label:q4_c;
+setVar:defense=defense+1;
+
+季言:我没有认真分辨过。;
+
+changeFigure:xp_smile_broken.webp -left -next;
+
+小胖:你连自己有没有在意过，都没有认真分辨过吗？;
+
+jumpLabel:q5;
+
+; 问题四选项D
+label:q4_d;
+setVar:sincerity=sincerity+1;
+setVar:trust=trust-1;
+
+季言:有时候我看到你，会下意识想避开。;
+
+changeFigure:xp_cry.webp -left -next;
+
+小胖:……为什么？;
+
+季言:我不知道该怎么面对你。;
+
+jumpLabel:q5;
+
+; 问题四选项E
+label:q4_e;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+2;
+
+季言:有过不舍。;
+
+季言:但我没有勇气主动面对你。;
+
+changeFigure:xp_surprised.webp -left -next;
+
+小胖:……真的？;
+
+jumpLabel:q5;
+
+; ============================================
+; 问题五：你为什么不回消息？
+label:q5;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:最后一个问题。;
+
+小胖:你没回我信息的时候，是把我的微信聊天折叠了吗？;
+
+小胖:还是和朋友玩游戏？;
+
+choose:直接承认:q5_a|承认逃避:q5_b|只说自己很忙:q5_c|反过来责怪小胖:q5_d|承认游戏但补充事实:q5_e;
+
+; 问题五选项A
+label:q5_a;
+setVar:sincerity=sincerity+3;
+setVar:trust=trust+1;
+
+季言:有几次我在和朋友玩游戏，看到了你的消息，但没有马上回。;
+
+季言:后来我忘了。;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:所以我真的排在游戏后面？;
+
+季言:……对不起。;
+
+jumpLabel:chapter2;
+
+; 问题五选项B
+label:q5_b;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+1;
+
+季言:有几次我看到了，但不知道怎么回，所以故意放着。;
+
+changeFigure:xp_normal.webp -left -next;
+
+小胖:……至少你承认了。;
+
+jumpLabel:chapter2;
+
+; 问题五选项C
+label:q5_c;
+setVar:defense=defense+2;
+
+季言:那段时间确实比较忙。;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:忙到没有时间回一句话，还是忙到不想回我？;
+
+jumpLabel:chapter2;
+
+; 问题五选项D
+label:q5_d;
+setVar:defense=defense+3;
+setVar:trust=trust-3;
+
+季言:你为什么总是要求我马上回复？;
+
+changeFigure:xp_angry.webp -left -next;
+
+小胖:……所以你还是在怪我？;
+
+jumpLabel:chapter2;
+
+; 问题五选项E
+label:q5_e;
+setVar:sincerity=sincerity+3;
+setVar:trust=trust+2;
+
+季言:我确实和朋友玩游戏。;
+
+季言:但真正的问题不是游戏，而是我觉得你的消息可以晚一点处理。;
+
+changeFigure:xp_cry.webp -left -next;
+
+小胖:……你终于说了真话。;
+
+jumpLabel:chapter2;
+
+; ============================================
+; 进入第二章
+; ============================================
+
+label:chapter2;
+
+changeFigure:none -left -next;
+changeFigure:none -right -next;
+
+:五个问题问完了。;
+
+:教室里陷入沉默。;
+
+jumpLabel:friendship_lessons;; ============================================
+; 第二章：小胖的六节"友谊课"
+; ============================================
+
+label:friendship_lessons;
+
+; 切换到黑色舞台背景
+changeBg:bg_blackboard.webp -next;
+setTransition: -target=bg-main -enter=fadeIn -next;
+
+changeFigure:xp_smile_broken.webp -left -next;
+
+小胖:我要这样的答案，不是为了看清你。;
+
+小胖:是为了我下次伤害别人后，从你这里找借口。;
+
+changeFigure:jy_surprised.webp -right -next;
+
+季言:（……他在说什么？）;
+
+小胖:我说话不仅诙谐和幽默。;
+
+小胖:你读出来了吗？;
+
+; ============================================
+; 友谊课一：给别人贴标签
+label:lesson1;
+
+小胖:第一课。;
+
+小胖:给别人贴标签。;
+
+:黑板上浮现出几个字：「小胖——很胖、很好骗、不值一提。」;
+
+小胖:你是不是也这样想过？;
+
+choose:我没有这样想过:l1_1|我承认我有时候默认你很容易被哄好:l1_2|这是你自己太在意标签:l1_3|我确实用一个简单的标签代替了对你的了解:l1_4|我不记得了，对不起:l1_5;
+
+label:l1_1;
+setVar:defense=defense+1;
+季言:我没有这样想过。;
+changeFigure:xp_angry.webp -left -next;
+小胖:是吗。;
+jumpLabel:lesson2;
+
+label:l1_2;
+setVar:sincerity=sincerity+1;
+季言:我承认我有时候默认你很容易被哄好。;
+changeFigure:xp_sad.webp -left -next;
+小胖:……至少你承认了。;
+jumpLabel:lesson2;
+
+label:l1_3;
+setVar:defense=defense+2;
+季言:这是你自己太在意标签。;
+changeFigure:xp_smile_broken.webp -left -next;
+小胖:你又在把问题推给我了。;
+jumpLabel:lesson2;
+
+label:l1_4;
+setVar:sincerity=sincerity+3;
+setVar:trust=trust+2;
+季言:我确实用一个简单的标签代替了对你的了解。;
+changeFigure:xp_surprised.webp -left -next;
+小胖:……你居然说了。;
+jumpLabel:lesson2;
+
+label:l1_5;
+setVar:defense=defense+1;
+季言:我不记得了，对不起。;
+changeFigure:xp_smile_broken.webp -left -next;
+小胖:你又不记得了。;
+jumpLabel:lesson2;
+
+; ============================================
+; 友谊课二：如何礼貌地说抱歉
+label:lesson2;
+
+小胖:第二课。;
+
+小胖:如何礼貌地说抱歉。;
+
+:聊天框浮现出：「我忘了，对不起。」;
+
+小胖:这句话是不是特别方便？;
+
+choose:我确实把道歉当成了结束话题的方法:l2_1|但我真的不是故意的:l2_2|对不起，你还想让我怎么样:l2_3|我应该先说明自己忘记了什么:l2_4|保持沉默:l2_5;
+
+label:l2_1;
+setVar:sincerity=sincerity+2;
+季言:我确实把道歉当成了结束话题的方法。;
+changeFigure:xp_normal.webp -left -next;
+小胖:原来你知道。;
+jumpLabel:lesson3;
+
+label:l2_2;
+setVar:defense=defense+1;
+季言:但我真的不是故意的。;
+changeFigure:xp_smile_broken.webp -left -next;
+小胖:你从来都不是故意的。;
+jumpLabel:lesson3;
+
+label:l2_3;
+setVar:defense=defense+3;
+setVar:trust=trust-2;
+季言:对不起，你还想让我怎么样？;
+changeFigure:xp_angry.webp -left -next;
+小胖:我不想让你怎么样。;
+小胖:我只想让你认真回答一次。;
+jumpLabel:lesson3;
+
+label:l2_4;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+1;
+季言:我应该先说明自己忘记了什么，而不是只说对不起。;
+changeFigure:xp_surprised.webp -left -next;
+小胖:……对。;
+jumpLabel:lesson3;
+
+label:l2_5;
+setVar:defense=defense+1;
+setVar:trust=trust-1;
+:季言沉默了。;
+changeFigure:xp_sad.webp -left -next;
+小胖:你又选择不说话。;
+jumpLabel:lesson3;
+
+; ============================================
+; 友谊课三：如何敷衍别人
+label:lesson3;
+
+小胖:第三课。;
+
+小胖:如何敷衍别人。;
+
+:小胖拿出手机，屏幕上只有一个模糊的表情包。;
+
+小胖:你看，一个表情包也可以代替一大段解释。;
+
+choose:以后我会认真打字:l3_1|有时候表情包只是为了缓和气氛:l3_2|你不能要求别人每次都写长消息:l3_3|我知道，那时候我只是想让对话赶快结束:l3_4|你把表情包看得太严重了:l3_5;
+
+label:l3_1;
+setVar:sincerity=sincerity+1;
+季言:以后我会认真打字。;
+changeFigure:xp_smile_broken.webp -left -next;
+小胖:以后……还有以后吗？;
+jumpLabel:lesson4;
+
+label:l3_2;
+setVar:defense=defense+1;
+季言:有时候表情包只是为了缓和气氛。;
+changeFigure:xp_sad.webp -left -next;
+小胖:缓和的结果是对话结束了。;
+jumpLabel:lesson4;
+
+label:l3_3;
+setVar:defense=defense+2;
+季言:你不能要求别人每次都写长消息。;
+changeFigure:xp_angry.webp -left -next;
+小胖:我没要求每次。;
+小胖:我要求的是你在乎的时候，至少让我看得出来。;
+jumpLabel:lesson4;
+
+label:l3_4;
+setVar:sincerity=sincerity+3;
+setVar:trust=trust+1;
+季言:我知道，那时候我只是想让对话赶快结束。;
+changeFigure:xp_normal.webp -left -next;
+小胖:……谢谢你承认。;
+jumpLabel:lesson4;
+
+label:l3_5;
+setVar:defense=defense+1;
+季言:你把表情包看得太严重了。;
+changeFigure:xp_smile_broken.webp -left -next;
+小胖:也许吧。;
+小胖:但你把我们的对话看得太不严重了。;
+jumpLabel:lesson4;
+
+; ============================================
+; 友谊课四：区别对待
+label:lesson4;
+
+小胖:第四课。;
+
+小胖:区别对待。;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:成绩好的朋友，我就跟他走。;
+
+小胖:其他人留在原地也没关系。;
+
+choose:我确实更愿意和有前途的人一起玩:l4_1|我没有按成绩区别对待你:l4_2|我可能没有意识到:l4_3|你不应该拿自己和别人比较:l4_4|我当时确实选择了别人:l4_5;
+
+label:l4_1;
+setVar:defense=defense+2;
+季言:我确实更愿意和那些让我觉得有前途的人一起玩。;
+changeFigure:xp_angry.webp -left -next;
+小胖:所以我不够有前途。;
+jumpLabel:lesson5;
+
+label:l4_2;
+setVar:defense=defense+2;
+setVar:trust=trust-1;
+季言:我没有按成绩区别对待你。;
+changeFigure:xp_smile_broken.webp -left -next;
+小胖:可你每次选的都是别人。;
+jumpLabel:lesson5;
+
+label:l4_3;
+setVar:sincerity=sincerity+1;
+季言:我可能没有意识到自己的行为看起来像区别对待。;
+changeFigure:xp_normal.webp -left -next;
+小胖:……没意识到，比故意的还伤人。;
+jumpLabel:lesson5;
+
+label:l4_4;
+setVar:defense=defense+2;
+季言:你不应该拿自己和别人比较。;
+changeFigure:xp_angry.webp -left -next;
+小胖:我没在比。;
+小胖:是你在用行动告诉我答案。;
+jumpLabel:lesson5;
+
+label:l4_5;
+setVar:sincerity=sincerity+3;
+setVar:trust=trust+2;
+季言:我当时确实选择了别人。;
+changeFigure:xp_cry.webp -left -next;
+小胖:……你终于说了。;
+jumpLabel:lesson5;
+
+; ============================================
+; 友谊课五：身材与颜值
+label:lesson5;
+
+小胖:第五课。;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:你不要觉得我不优秀，也不要觉得我什么都不懂。;
+
+choose:我从来没有觉得你不优秀:l5_1|我承认我以前低估过你:l5_2|你确实有很多不会的东西:l5_3|你不用向我证明自己:l5_4|你太在意别人怎么看你:l5_5;
+
+label:l5_1;
+setVar:sincerity=sincerity+1;
+季言:我从来没有觉得你不优秀。;
+changeFigure:xp_smile_broken.webp -left -next;
+小胖:但你也没有觉得我优秀。;
+jumpLabel:lesson6;
+
+label:l5_2;
+setVar:sincerity=sincerity+3;
+setVar:trust=trust+2;
+季言:我承认我以前低估过你。;
+changeFigure:xp_surprised.webp -left -next;
+小胖:……你真的这么想？;
+季言:真的。;
+jumpLabel:lesson6;
+
+label:l5_3;
+setVar:defense=defense+2;
+季言:你确实有很多不会的东西。;
+changeFigure:xp_angry.webp -left -next;
+小胖:你也是。;
+小胖:但你不会的东西，不影响别人把你当朋友。;
+jumpLabel:lesson6;
+
+label:l5_4;
+setVar:defense=defense+1;
+季言:你不用向我证明自己。;
+changeFigure:xp_sad.webp -left -next;
+小胖:我不是在向你证明。;
+小胖:我是在告诉你，你有能力看见我，但你没有。;
+jumpLabel:lesson6;
+
+label:l5_5;
+setVar:defense=defense+2;
+季言:你会这么想，是因为你太在意别人怎么看你。;
+changeFigure:xp_smile_broken.webp -left -next;
+小胖:也许吧。;
+小胖:但我在意的那个"别人"，就是你。;
+jumpLabel:lesson6;
+
+; ============================================
+; 友谊课六：免打扰
+label:lesson6;
+
+小胖:最后一课。;
+
+小胖:遇到烦人精就开免打扰。;
+
+小胖:这样就不会打扰到假期玩游戏的心情了。;
+
+choose:我开过:l6_1|我没有开，但我确实把你放到了一边:l6_2|那只是手机设置:l6_3|我不想承认，但你的消息确实让我想逃:l6_4|你可以直接说，不需要用讽刺的方式:l6_5;
+
+label:l6_1;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+1;
+季言:我开过。;
+changeFigure:xp_sad.webp -left -next;
+小胖:……谢谢你承认。;
+jumpLabel:chapter3_intro;
+
+label:l6_2;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+1;
+季言:我没有开，但我确实把你放到了一边。;
+changeFigure:xp_normal.webp -left -next;
+小胖:……结果是一样的。;
+jumpLabel:chapter3_intro;
+
+label:l6_3;
+setVar:defense=defense+2;
+季言:那只是手机设置，不代表我讨厌你。;
+changeFigure:xp_smile_broken.webp -left -next;
+小胖:不代表你在乎我。;
+jumpLabel:chapter3_intro;
+
+label:l6_4;
+setVar:sincerity=sincerity+2;
+季言:我不想承认，但你的消息有时候确实让我想逃。;
+changeFigure:xp_cry.webp -left -next;
+小胖:……我知道了。;
+jumpLabel:chapter3_intro;
+
+label:l6_5;
+setVar:defense=defense+2;
+季言:你可以直接说，不需要用讽刺的方式。;
+changeFigure:xp_angry.webp -left -next;
+小胖:你以为我在讽刺？;
+小胖:我在告诉你我有多疼。;
+jumpLabel:chapter3_intro;
+
+; ============================================
+; 进入第三章
+label:chapter3_intro;
+
+changeFigure:none -left -next;
+changeFigure:none -right -next;
+
+:六节课结束了。;
+
+:教室里安静得能听见窗外风的声音。;
+
+changeBg:bg_classroom_sunset.webp -next;
+
+小胖:你还记得寒假前最后一天吗？;
+
+jumpLabel:chapter3;; ============================================
+; 第三章：寒假前最后一天
+; ============================================
+
+label:chapter3;
+
+changeBg:bg_classroom_sunset.webp -next;
+
+:小胖的问题让季言回到了那个冬天。;
+
+changeFigure:jy_normal.webp -right -next;
+miniAvatar:jy_normal.webp;
+
+季言:（那一天……）;
+
+季言:（我记得小胖在排队等吴媚老师签名。）;
+
+季言:（我一个人坐在教室里等妈妈。）;
+
+changeBg:bg_classroom_empty.webp -next;
+
+changeFigure:xp_hold_chips.webp -left -next;
+
+:小胖拿着一小罐薯片走了过来。;
+
+小胖:给你。;
+
+季言:这是？;
+
+小胖:薯片。;
+
+小胖:我也不知道下学期还能不能遇到你。;
+
+小胖:所以想给你一点东西，让你对我有个印象。;
+
+changeFigure:jy_surprised.webp -right -next;
+
+季言:（……他那天是害怕以后见不到我？）;
+
+changeFigure:xp_normal.webp -left -next;
+
+小胖:你也快点准备走啦。;
+
+小胖:宿舍还有东西要收拾呢。;
+
+; 切换到宿舍场景
+changeBg:bg_dorm_evening.webp -next;
+
+; 温暖BGM
+bgm:bgm_warm2.mp3 -volume=40 -enter=2000;
+
+changeFigure:none -left -next;
+changeFigure:none -right -next;
+
+季言:（回到宿舍后，我发现要装很多东西回家，却没有袋子。）;
+
+changeFigure:xp_hold_bag.webp -left -next;
+
+:小胖递过来一个干净的纸袋。;
+
+小胖:这个给你，我这里还有多的。;
+
+changeFigure:jy_normal.webp -right -next;
+
+季言:太感谢你了，小胖。;
+
+changeFigure:xp_happy.webp -left -next;
+
+小胖:能帮到你，我也很开心。;
+
+; 宿舍再见
+changeFigure:xp_normal.webp -left -next;
+changeFigure:jy_normal.webp -right -next;
+
+:季言的妈妈来到了宿舍。;
+
+:宿舍里不再只有两个人。;
+
+小胖:再见。;
+
+季言:再见。;
+
+:这两个字停留了很久。;
+
+changeFigure:jy_guilty.webp -right -next;
+
+季言:（我那时看了看他的眼睛。）;
+
+季言:（我好像看到了不舍。）;
+
+季言:（但也可能只是我的错觉。）;
+
+changeFigure:none -left -next;
+changeFigure:none -right -next;
+
+changeBg:bg_classroom_sunset.webp -next;
+
+:回忆结束。;
+
+小胖:你还记得那天吗？;
+
+choose:记得很清楚:c3_1|只记得大概:c3_2|承认只记得小胖帮了自己:c3_3|承认自己看到了他的认真:c3_4|否认小胖的解读:c3_5;
+
+label:c3_1;
+setVar:sincerity=sincerity+2;
+setVar:trust=trust+3;
+季言:记得。;
+季言:你给了我薯片，也给了我装东西的袋子。;
+changeFigure:xp_surprised.webp -left -next;
+小胖:……你居然记得。;
+jumpLabel:chapter4;
+
+label:c3_2;
+setVar:trust=trust-2;
+季言:好像记得。;
+changeFigure:xp_smile_broken.webp -left -next;
+小胖:你连那天都只记得"好像"吗？;
+jumpLabel:chapter4;
+
+label:c3_3;
+setVar:sincerity=sincerity+1;
+setVar:trust=trust+1;
+季言:我记得你给了我袋子。;
+季言:但我没想到那对你有这么重要。;
+changeFigure:xp_sad.webp -left -next;
+小胖:……你不知道。;
+jumpLabel:chapter4;
+
+label:c3_4;
+setVar:sincerity=sincerity+3;
+setVar:trust=trust+3;
+季言:我记得。;
+季言:你那天其实是害怕以后见不到我，所以才给我薯片。;
+changeFigure:xp_cry.webp -left -next;
+小胖:……;
+:小胖短暂地沉默了。;
+小胖:你居然看出来了。;
+jumpLabel:chapter4;
+
+label:c3_5;
+setVar:trust=trust-3;
+setVar:defense=defense+2;
+季言:你可能只是自己想多了。;
+changeFigure:xp_angry.webp -left -next;
+小胖:……原来只有我一个人觉得舍不得。;
+jumpLabel:chapter4;
+
+; ============================================
+; 第四章：过去的他已经留在回忆里
+; ============================================
+
+label:chapter4;
+
+changeFigure:none -left -next;
+changeFigure:none -right -next;
+
+changeBg:bg_memory_fade.webp -next;
+
+:教室的氛围变了。;
+
+:像一张褪色的老照片。;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:我喜欢的那个你，可能早就死了。;
+
+小胖:死在我的回忆里。;
+
+changeFigure:jy_surprised.webp -right -next;
+
+季言:（……！）;
+
+小胖:不是现在的你死了。;
+
+小胖:是过去的那个你，不会再回来了。;
+
+小胖:他的热情、温柔、幽默和知性。;
+
+小胖:现在的你我看不到，但不代表你没有。;
+
+小胖:可那对我来说已经变味了。;
+
+季言:……;
+
+季言:看不到，不代表没有。;
+
+小胖:可对我来说，它已经变味了。;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:我喜欢看《瑞克和莫蒂》。;
+
+小胖:我始终相信有平行世界。;
+
+小胖:在某一平行世界，有人陪了我很久。;
+
+小胖:我们都没有结婚，但很美满。;
+
+changeBg:bg_memory_fade.webp -next;
+
+:画面切换到梦幻的平行世界。;
+
+:宇宙星空中漂浮的校园走廊。;
+
+:两侧有许多扇门，每一扇门都是一个平行世界。;
+
+:有的世界里，两个少年一直保持联系。;
+
+:有的世界里，他们早就互相删除。;
+
+:有的世界里，他们在大学重新遇见。;
+
+:有的世界里，他们没有结婚，却一直陪着对方生活。;
+
+changeFigure:xp_smile_broken.webp -left -next;
+
+小胖:这次说不说byebye就看你了。;
+
+jumpLabel:chapter5;
+
+; ============================================
+; 第五章：我到底是谁
+; ============================================
+
+label:chapter5;
+
+changeBg:bg_classroom_dark.webp -next;
+
+changeFigure:none -left -next;
+changeFigure:none -right -next;
+
+:季言看到了小胖手机里的项目草稿。;
+
+changeFigure:jy_surprised.webp -right -next;
+
+季言:你现在还在研究这么多东西？;
+
+changeFigure:xp_normal.webp -left -next;
+
+小胖:嗯。;
+
+小胖:我会Java、Python、JavaScript，也做过网页、UI、脚本、逆向。;
+
+小胖:接触过内网穿透、DNS、反向代理、抓包和账号分析。;
+
+小胖:研究过AI、ComfyUI、量化和自动化系统。;
+
+小胖:也当过站长，经营过几百人活跃的网站，还开过网店。;
+
+季言:听起来你什么都会。;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:别觉得我很厉害。;
+
+小胖:我只是会一些精华部分。;
+
+小胖:有些东西没人带我，我就不敢碰。;
+
+小胖:量化一不小心会把钱浪费光。;
+
+小胖:刷机一不小心会把手机变成砖。;
+
+小胖:Linux我还是小白。;
+
+changeFigure:jy_guilty.webp -right -next;
+
+季言:（……他比我以为的要复杂得多。）;
+
+changeFigure:xp_serious.webp -left -next;
+
+小胖:你不要觉得我不优秀。;
+
+小胖:也不要觉得我什么都不懂。;
+
+小胖:我知道自己在做什么。;
+
+小胖:我只是还没有走到我想去的地方。;
+
+jumpLabel:ending_check;
+
+; ============================================
+; 结局判定
+; ============================================
+
+label:ending_check;
+
+changeFigure:none -left -next;
+changeFigure:none -right -next;
+
+changeBg:bg_classroom_sunset.webp -next;
+
+; 根据数值判定结局
+choose:说出真心话:end_true|我无法再面对他:end_peace|保持沉默:end_silence;
+
+; ============================================
+; 结局一：重新认识
+label:end_true;
+
+季言:我在意过你。;
+
+季言:我把你当过朋友。;
+
+季言:但我确实把你放在了很后面，也确实嫌弃过你。;
+
+季言:有几次我在玩游戏，看到你的消息，却没有回。;
+
+季言:还有几次，我只是单纯不想面对你。;
+
+changeFigure:xp_cry.webp -left -next;
+
+小胖:……你终于说清楚了。;
+
+季言:我不能保证变回以前。;
+
+季言:但我想重新认识现在的你。;
+
+changeFigure:xp_normal.webp -left -next;
+
+小胖:那就从别再把我当成NPC开始。;
+
+unlockCg:cg40_end_remeet.webp -name=重新认识 -series=ending;
+
+:和好不是回到过去。;
+
+:是知道对方变了以后，还愿不愿意重新认识。;
+
+end;
+
+; ============================================
+; 结局二：平静告别
+label:end_peace;
+
+changeFigure:xp_sad.webp -left -next;
+
+小胖:我喜欢的那个你，可能早就死在回忆里了。;
+
+季言:我知道。;
+
+季言:现在的我，也不一定值得你继续等。;
+
+小胖:这次的再见，就不要再约定以后了。;
+
+unlockCg:cg42_end_peace_bye.webp -name=平静告别 -series=ending;
+
+:两人互相道别。;
+
+:不是所有重要的人，都必须继续留在生活里。;
+
+end;
+
+; ============================================
+; 结局三：沉默就是答案
+label:end_silence;
+
+:季言没有说话。;
+
+changeFigure:xp_smile_broken.webp -left -next;
+
+小胖:你不说也没关系。;
+
+小胖:其实我已经知道答案了。;
+
+小胖:只是以前不愿意承认。;
+
+unlockCg:cg44_end_silence.webp -name=沉默就是答案 -series=ending;
+
+:他把薯片和袋子的回忆画面收进一只纸箱。;
+
+:有时候，最明确的答案不是拒绝。;
+
+:是对方再也不愿意继续问了。;
+
+end;

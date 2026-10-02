@@ -1,0 +1,7 @@
+Game_name:再见之前，请说真心话;
+Game_key:byebye2024;
+Title_img:title_keyvisual_4k.webp;
+Game_Logo:title_keyvisual_4k.webp;
+Enable_Appreciation:true;
+Enable_Continue:true;
+Enable_flowchart:true;
